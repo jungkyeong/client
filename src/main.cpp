@@ -39,6 +39,16 @@ int main() {
       return 1;
     }
 
+    // Load CA cert to verify server
+    if (!SSL_CTX_load_verify_locations(ctx, "cert/CA/ca.crt", nullptr)) {
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+    // Enable server certificate verification
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, nullptr);
+    SSL_CTX_set_verify_depth(ctx, 1);
+
     // define socket handler
     int client_h = socket(AF_INET, SOCK_STREAM, 0); // SOCK_STREAM: safety, SOCK_DGRAM: fast
 
