@@ -45,9 +45,11 @@ int main() {
         return 1;
     }
 
-    // Enable server certificate verification
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, nullptr);
-    SSL_CTX_set_verify_depth(ctx, 1);
+    // If CA Signed, Enable server certificate verification
+    if(SELF_CA_CHECK == 1){
+      SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, nullptr);
+      SSL_CTX_set_verify_depth(ctx, 1);
+    }
 
     // define socket handler
     int client_h = socket(AF_INET, SOCK_STREAM, 0); // SOCK_STREAM: safety, SOCK_DGRAM: fast
